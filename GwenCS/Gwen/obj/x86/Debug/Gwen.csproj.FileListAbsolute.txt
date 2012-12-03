@@ -1,0 +1,5 @@
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Gwen\bin\x86\Debug\Gwen.dll
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Gwen\bin\x86\Debug\Gwen.pdb
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Gwen\obj\x86\Debug\Gwen.dll
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Gwen\obj\x86\Debug\Gwen.pdb
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Gwen\obj\x86\Debug\Gwen.csprojResolveAssemblyReference.cache

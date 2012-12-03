@@ -1,0 +1,7 @@
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Gwen.UnitTest\bin\x86\Debug\Gwen.UnitTest.dll
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Gwen.UnitTest\bin\x86\Debug\Gwen.UnitTest.pdb
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Gwen.UnitTest\bin\x86\Debug\Gwen.dll
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Gwen.UnitTest\bin\x86\Debug\Gwen.pdb
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Gwen.UnitTest\obj\x86\Debug\Gwen.UnitTest.dll
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Gwen.UnitTest\obj\x86\Debug\Gwen.UnitTest.pdb
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Gwen.UnitTest\obj\x86\Debug\Gwen.UnitTest.csprojResolveAssemblyReference.cache

@@ -1,0 +1,12 @@
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Designer\bin\Debug\Designer.exe.config
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Designer\obj\Debug\Designer.csprojResolveAssemblyReference.cache
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Designer\bin\Debug\Designer.exe
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Designer\bin\Debug\Designer.pdb
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Designer\bin\Debug\Gwen.dll
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Designer\bin\Debug\Gwen.Renderer.OpenTK.dll
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Designer\bin\Debug\OpenTK.dll
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Designer\bin\Debug\Gwen.Renderer.OpenTK.pdb
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Designer\bin\Debug\Gwen.pdb
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Designer\bin\Debug\OpenTK.xml
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Designer\obj\Debug\Designer.exe
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Designer\obj\Debug\Designer.pdb

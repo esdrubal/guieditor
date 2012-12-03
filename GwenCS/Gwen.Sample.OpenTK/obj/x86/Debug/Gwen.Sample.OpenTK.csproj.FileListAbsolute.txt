@@ -1,0 +1,15 @@
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Gwen.Sample.OpenTK\bin\Debug\Gwen.Sample.OpenTK.exe
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Gwen.Sample.OpenTK\bin\Debug\Gwen.Sample.OpenTK.pdb
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Gwen.Sample.OpenTK\bin\Debug\Gwen.dll
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Gwen.Sample.OpenTK\bin\Debug\Gwen.Renderer.OpenTK.dll
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Gwen.Sample.OpenTK\bin\Debug\Gwen.UnitTest.dll
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Gwen.Sample.OpenTK\bin\Debug\OpenTK.dll
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Gwen.Sample.OpenTK\bin\Debug\Gwen.Renderer.OpenTK.pdb
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Gwen.Sample.OpenTK\bin\Debug\Gwen.UnitTest.pdb
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Gwen.Sample.OpenTK\bin\Debug\Gwen.pdb
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Gwen.Sample.OpenTK\bin\Debug\OpenTK.xml
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Gwen.Sample.OpenTK\obj\x86\Debug\Gwen.Sample.OpenTK.csprojResolveAssemblyReference.cache
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Gwen.Sample.OpenTK\obj\x86\Debug\Gwen.Sample.OpenTK.Properties.Resources.resources
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Gwen.Sample.OpenTK\obj\x86\Debug\Gwen.Sample.OpenTK.csproj.GenerateResource.Cache
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Gwen.Sample.OpenTK\obj\x86\Debug\Gwen.Sample.OpenTK.exe
+C:\Users\Marcos\Desktop\MY Gwen\GwenCS\Gwen.Sample.OpenTK\obj\x86\Debug\Gwen.Sample.OpenTK.pdb
