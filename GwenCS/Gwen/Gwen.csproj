@@ -47,6 +47,9 @@
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NotifyPropertyWeaver">
+      <HintPath>..\Lib\NotifyPropertyWeaver.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -167,7 +170,7 @@
     <Compile Include="DragDrop\DragAndDrop.cs" />
     <Compile Include="DragDrop\Package.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Renderer\Base.cs" />
+    <Compile Include="Renderer\Base.cs" /> 
     <Compile Include="Renderer\ICacheToTexture.cs" />
     <Compile Include="Skin\Base.cs" />
     <Compile Include="UserData.cs" />
@@ -181,8 +184,9 @@
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
+  </Target>-->
+  <UsingTask TaskName="NotifyPropertyWeaverMsBuildTask.WeavingTask" AssemblyFile="$(SolutionDir)Lib\NotifyPropertyWeaverMsBuildTask.dll" />
+  <Target Name="AfterCompile">
+    <NotifyPropertyWeaverMsBuildTask.WeavingTask ProcessFields="true" MessageImportance="High"/>
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

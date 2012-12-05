@@ -13,7 +13,7 @@ namespace Designer
         Gwen.Control.TabButton	m_pTab;
 		DocumentCanvas		    m_pCanvas;
 		Hierarchy				m_pHierarchy;
-
+        ReflectionProperties    m_pPropreties;
 		string			        m_strFilename;
 
 		//ImportExport.Base*		m_Exporter;
@@ -50,7 +50,7 @@ namespace Designer
 		    m_pCanvas = new DocumentCanvas( pInner );
 		    m_pCanvas.Dock = Pos.Fill;
 		    m_pCanvas.HierachyChanged += OnHierachyChanged;
-
+            m_pCanvas.SelectionChanged += OnSelectionChanged;
 
 
 	        // The controls on the right
@@ -58,12 +58,12 @@ namespace Designer
 		    m_pHierarchy.WatchCanvas( m_pCanvas );
 		    m_pHierarchy.Dock = Pos.Fill;
 
-		    Properties pProperties = new Properties( pRightSplitter );
-		    // pProperties.WatchCanvas( m_pCanvas );
-		    pProperties.Dock = Pos.Fill;
+            m_pPropreties = new ReflectionProperties(pRightSplitter); //new Properties( pRightSplitter );
+            m_pPropreties.Setup(m_pCanvas);
+            m_pPropreties.Dock = Pos.Fill;
 
             pRightSplitter.SetPanel(0, m_pHierarchy);
-            pRightSplitter.SetPanel(1, pProperties);
+            pRightSplitter.SetPanel(1, m_pPropreties);
 	        
         }
 
@@ -80,6 +80,12 @@ namespace Designer
         void OnHierachyChanged(Gwen.Control.Base  caller)
         {
             m_pHierarchy.CompleteRefresh();
+        }
+
+        void OnSelectionChanged(List<Gwen.Control.Base> selection)
+        {
+            if (selection.Count > 0)
+                m_pPropreties.Setup(selection[0]);
         }
 
 		

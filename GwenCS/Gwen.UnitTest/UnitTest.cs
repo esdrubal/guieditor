@@ -124,7 +124,7 @@ namespace Gwen.UnitTest
             test.Dock = Pos.Fill;
             test.Hide();
             test.UnitTest = this;
-            btn.UserData = test;
+            btn.UserData.Add("test",test);
             btn.Clicked += OnCategorySelect;
         }
 
@@ -143,7 +143,7 @@ namespace Gwen.UnitTest
             {
                 m_LastControl.Hide();
             }
-            Base test = control.UserData as Base;
+            Base test = control.UserData.Get<Base>("test");
             test.Show();
             m_LastControl = test;
         }

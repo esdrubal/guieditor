@@ -45,11 +45,11 @@ namespace Gwen.UnitTest
 
             outer.DrawDebugOutlines = true;
 
-            inner1.UserData = CreateControls(inner1, 0, "Control 1", 440, 10);
-            inner2.UserData = CreateControls(inner2, 1, "Control 2", 650, 10);
-            inner3.UserData = CreateControls(inner3, 2, "Control 3", 440, 170);
-            inner4.UserData = CreateControls(inner4, 3, "Control 4", 650, 170);
-            inner5.UserData = CreateControls(inner5, 4, "Control 5", 440, 330);
+            inner1.UserData.Add("test",CreateControls(inner1, 0, "Control 1", 440, 10));
+            inner2.UserData.Add("test",CreateControls(inner2, 1, "Control 2", 650, 10));
+            inner3.UserData.Add("test",CreateControls(inner3, 2, "Control 3", 440, 170));
+            inner4.UserData.Add("test",CreateControls(inner4, 3, "Control 4", 650, 170));
+            inner5.UserData.Add("test",CreateControls(inner5, 4, "Control 5", 440, 330));
 
             Control.Label l_padding = new Control.Label(this);
             l_padding.Text = "Padding:";
@@ -79,7 +79,7 @@ namespace Gwen.UnitTest
          
             Control.HorizontalSlider width = new HorizontalSlider(gb);
             width.Name = "Width";
-            width.UserData = subject;
+            width.UserData.Add("test",subject);
             width.Min = 50;
             width.Max = 350;
             width.Value = 100;
@@ -94,7 +94,7 @@ namespace Gwen.UnitTest
 
             Control.HorizontalSlider height = new Control.HorizontalSlider(gb);
             height.Name = "Height";
-            height.UserData = subject;
+            height.UserData.Add("test",subject);
             height.Min = 50;
             height.Max = 350;
             height.Value = 100;
@@ -103,7 +103,7 @@ namespace Gwen.UnitTest
             Align.PlaceRightBottom(height, l_height);
 
             Control.RadioButtonGroup dock = new RadioButtonGroup(gb, "Dock");
-            dock.UserData = subject; // store control that we are controlling
+            dock.UserData.Add("test",subject); // store control that we are controlling
             dock.AddOption("Left");
             dock.AddOption("Top");
             dock.AddOption("Right");
@@ -124,7 +124,7 @@ namespace Gwen.UnitTest
 
             Control.HorizontalSlider margin = new HorizontalSlider(gb);
             margin.Name = "Margin";
-            margin.UserData = subject;
+            margin.UserData.Add("test",subject);
             margin.Min = 0;
             margin.Max = 50;
             margin.Value = 10;
@@ -147,7 +147,7 @@ namespace Gwen.UnitTest
 
         void MarginChanged(Base control)
         {
-            Base inner = control.UserData as Base;
+            Base inner = control.UserData.Get<Base>("test");
             Control.Slider val = control as Control.Slider;
             int i = (int)val.Value;
             inner.Margin = new Margin(i, i, i, i);
@@ -156,7 +156,7 @@ namespace Gwen.UnitTest
 
         void WidthChanged(Base control)
         {
-            Base inner = control.UserData as Base;
+            Base inner = control.UserData.Get<Base>("test");
             Control.Slider val = control as Control.Slider;
             inner.Width = (int)val.Value;
             outer.Invalidate();
@@ -164,7 +164,7 @@ namespace Gwen.UnitTest
 
         void HeightChanged(Base control)
         {
-            Base inner = control.UserData as Base;
+            Base inner = control.UserData.Get<Base>("test");
             Control.Slider val = control as Control.Slider;
             inner.Height = (int)val.Value;
             outer.Invalidate();
@@ -172,9 +172,9 @@ namespace Gwen.UnitTest
 
         void DockChanged(Base control)
         {
-            Base inner = (Base) control.UserData;
+            Base inner = control.UserData.Get<Base>("test");
             RadioButtonGroup rbg = (RadioButtonGroup) control;
-            Base gb = inner.UserData as Base;
+            Base gb = inner.UserData.Get<Base>("test");
             Control.Slider w = gb.FindChildByName("Width", true) as Control.Slider;
             Control.Slider h = gb.FindChildByName("Height", true) as Control.Slider;
 

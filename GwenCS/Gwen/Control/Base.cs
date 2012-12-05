@@ -7,14 +7,18 @@ using System.Windows.Forms;
 using Gwen.Anim;
 using Gwen.DragDrop;
 using Gwen.Input;
+using System.ComponentModel;
+using NotifyPropertyWeaver;
 
 namespace Gwen.Control
 {
     /// <summary>
     /// Base control class.
     /// </summary>
-    public class Base : IDisposable
+    public class Base : IDisposable, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
         // this REALLY needs to be replaced with control-specific events
         /// <summary>
         /// Delegate used for all control event handlers.
@@ -42,6 +46,7 @@ namespace Gwen.Control
 
         private Skin.Base m_Skin;
 
+        [NotifyProperty]
         private Rectangle m_Bounds;
         private Rectangle m_RenderBounds;
         private Rectangle m_InnerBounds;
@@ -905,11 +910,7 @@ namespace Gwen.Control
 
             Rectangle oldBounds = Bounds;
 
-            m_Bounds.X = x;
-            m_Bounds.Y = y;
-
-            m_Bounds.Width = width;
-            m_Bounds.Height = height;
+            m_Bounds = new Rectangle(x, y, width, height);
 
             OnBoundsChanged(oldBounds);
 
@@ -952,6 +953,7 @@ namespace Gwen.Control
         /// <param name="oldBounds">Old bounds.</param>
         protected virtual void OnBoundsChanged(Rectangle oldBounds)
         {
+
             //Anything that needs to update on size changes
             //Iterate my children and tell them I've changed
             //
