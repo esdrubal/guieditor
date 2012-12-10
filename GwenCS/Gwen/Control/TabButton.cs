@@ -124,7 +124,7 @@ namespace Gwen.Control
                 {
                     var nextTab = Parent.Children[me + 1];
                     TabControl.OnTabPressed(nextTab);
-                    InputHandler.KeyboardFocus = nextTab;
+                    InputHandler.Instance.KeyboardFocus = nextTab;
                 }
             }
 
@@ -148,7 +148,7 @@ namespace Gwen.Control
                 {
                     var prevTab = Parent.Children[me - 1];
                     TabControl.OnTabPressed(prevTab);
-                    InputHandler.KeyboardFocus = prevTab;
+                    InputHandler.Instance.KeyboardFocus = prevTab;
                 }
             }
 

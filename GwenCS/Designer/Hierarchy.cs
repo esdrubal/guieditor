@@ -39,7 +39,6 @@ namespace Designer
             if (pNode.UserData.ContainsKey("TargetControl") && pNode.UserData.Get<Gwen.Control.Base>("TargetControl") == pControl)
             {
                 pNode.SetSelected(true, false);
-
             }
             else
             {
@@ -59,13 +58,13 @@ namespace Designer
         {
 	        m_Tree.RemoveAll();
 
-	        UpdateNode( m_Tree, m_pCanvas );
+	        AddControlNode( m_Tree, m_pCanvas );
 
 	        m_Tree.ExpandAll();
         }
 
 		
-		void UpdateNode( Gwen.Control.TreeNode pNode, Gwen.Control.Base pControl )
+		void AddControlNode( Gwen.Control.TreeNode pNode, Gwen.Control.Base pControl )
         {
             if (pControl.GetType() == typeof(SelectionLayer))
                 return;
@@ -78,10 +77,27 @@ namespace Designer
             //pChildNode.SetImage("img/controls/" + pControl.GetType().Name + ".png");
 		    pChildNode.Selected += OnNodeSelected;
             pChildNode.UserData.Add("TargetControl", pControl);
+            //pChildNode.ShouldDrawBackground = true;
+            pChildNode.DragAndDrop_SetPackage(true, "ControlHierarchy", pChildNode);
+            pChildNode.DragAndDropCanAcceptPackage += new Func<Gwen.Control.Base, Gwen.DragDrop.Package, bool>(
+                delegate(Gwen.Control.Base c, Gwen.DragDrop.Package p)
+                {
+                    return p.Name == "ControlHierarchy";
+                });
+            pChildNode.DragAndDropHandleDrop += new Func<Gwen.Control.Base, Gwen.DragDrop.Package, int, int, bool>(
+                delegate(Gwen.Control.Base control, Gwen.DragDrop.Package p, int x, int y)
+                {
+                    var childNode = p.data as Gwen.Control.TreeNode;
+                    var node = control as Gwen.Control.TreeNode;
+                    if (childNode == null || node == null)
+                        return false;
+                    node.AddNode(childNode);
+                    return true;
+                });
 
             foreach (var child in pControl.Children)
             {
-		        UpdateNode( pChildNode, child );
+		        AddControlNode( pChildNode, child );
 	        }
         }
 

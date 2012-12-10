@@ -161,7 +161,7 @@ namespace Gwen.Control
             if (down)
             {
                 IsDepressed = true;
-                InputHandler.MouseFocus = this;
+                InputHandler.Instance.MouseFocus = this;
                 if (Pressed != null)
                     Pressed.Invoke(this);
             }
@@ -173,7 +173,7 @@ namespace Gwen.Control
                 }
 
                 IsDepressed = false;
-                InputHandler.MouseFocus = null;
+                InputHandler.Instance.MouseFocus = null;
                 if (Released != null)
                     Released.Invoke(this);
             }

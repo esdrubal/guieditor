@@ -34,13 +34,10 @@ namespace Designer
 
         }
 
-        public static int i;
-        public void UpdateProperties()
+        private void UpdateProperties()
         {
             ptree.RemoveAll();
             var type = Target.GetType();
-
-            Console.WriteLine(i++);
 
             var tFields = type.GetFields();
             var tProps = type.GetProperties();
@@ -62,9 +59,8 @@ namespace Designer
             ptree.ExpandAll();
         }
 
-        public void TargetPropertyChanged(object o, System.ComponentModel.PropertyChangedEventArgs args)
+        private void TargetPropertyChanged(object o, System.ComponentModel.PropertyChangedEventArgs args)
         {
-            //UpdateProperties();
             var prop = ptree.FindChildByName(args.PropertyName, true) as Gwen.Control.PropertyRow;
             if (prop != null)
             {

@@ -277,7 +277,7 @@ namespace Gwen.Control
         protected virtual void OnRowSelected(Base control)
         {
             // [omeg] changed default behavior
-            bool clear = false;// !InputHandler.InputHandler.IsShiftDown;
+            bool clear = false;// !InputHandler.Instance.InputHandler.Instance.IsShiftDown;
             ListBoxRow row = control as ListBoxRow;
             if (row == null)
                 return;

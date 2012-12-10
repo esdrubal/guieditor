@@ -12,7 +12,8 @@ namespace Designer
     class DesignerBase : Gwen.Control.Base
     {
 
-		Gwen.Control.TabControl			m_DocumentHolder;
+		Gwen.Control.TabControl	m_DocumentHolder;
+        ControlToolbox m_ControlBox;
 
         public DesignerBase(Gwen.Control.Base parent)
             :base(parent)
@@ -72,8 +73,8 @@ namespace Designer
         }
         void CreateControlToolbox() 
         {
-            var pControlBox = new ControlToolbox( this );
-	        pControlBox.Dock = Pos.Left;
+            m_ControlBox = new ControlToolbox( this );
+	        m_ControlBox.Dock = Pos.Left;
         }
 
 		void NewDocument(Gwen.Control.Base target)
@@ -81,7 +82,8 @@ namespace Designer
 	       var pButton = m_DocumentHolder.AddPage("Untitled Design");
 	        pButton.SetImage( "img/document_normal.png" );
 
-	        var doc = new Document( pButton.Page, "Document" );
+            var doc = new Document(pButton.Page, "Document");
+
 	        //doc.Initialize( pButton );
 
 	        //pButton.Press;

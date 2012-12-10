@@ -10,10 +10,10 @@ namespace Designer
 {
     class Document : Gwen.Control.Base 
     {
-        Gwen.Control.TabButton	m_pTab;
-		DocumentCanvas		    m_pCanvas;
-		Hierarchy				m_pHierarchy;
-        ReflectionProperties    m_pPropreties;
+        public Gwen.Control.TabButton	Tab;
+        public DocumentCanvas Canvas;
+        public Hierarchy Hierarchy;
+        public ReflectionProperties m_pPropreties;
 		string			        m_strFilename;
 
 		//ImportExport.Base*		m_Exporter;
@@ -40,29 +40,27 @@ namespace Designer
 	        pRightSplitter.SetSize( 200, 200 );
 	        //pRightSplitter.SetScaling( false, 200 );
 
-
-
 	        pSplitter.SetPanel(0,pInner);
             pSplitter.SetPanel(1,pRightSplitter);
 
 	
 	        // The actual canvas onto which we drop controls
-		    m_pCanvas = new DocumentCanvas( pInner );
-		    m_pCanvas.Dock = Pos.Fill;
-		    m_pCanvas.HierachyChanged += OnHierachyChanged;
-            m_pCanvas.SelectionChanged += OnSelectionChanged;
+		    Canvas = new DocumentCanvas( pInner );
+		    Canvas.Dock = Pos.Fill;
+		    Canvas.HierachyChanged += OnHierachyChanged;
+            Canvas.SelectionChanged += OnSelectionChanged;
 
 
 	        // The controls on the right
-		    m_pHierarchy = new Hierarchy( pRightSplitter );
-		    m_pHierarchy.WatchCanvas( m_pCanvas );
-		    m_pHierarchy.Dock = Pos.Fill;
+		    Hierarchy = new Hierarchy( pRightSplitter );
+		    Hierarchy.WatchCanvas( Canvas );
+		    Hierarchy.Dock = Pos.Fill;
 
             m_pPropreties = new ReflectionProperties(pRightSplitter); //new Properties( pRightSplitter );
-            m_pPropreties.Setup(m_pCanvas);
+            m_pPropreties.Setup(Canvas);
             m_pPropreties.Dock = Pos.Fill;
 
-            pRightSplitter.SetPanel(0, m_pHierarchy);
+            pRightSplitter.SetPanel(0, Hierarchy);
             pRightSplitter.SetPanel(1, m_pPropreties);
 	        
         }
@@ -79,7 +77,7 @@ namespace Designer
         void DoSaveFromDialog( Event::Info info );*/
         void OnHierachyChanged(Gwen.Control.Base  caller)
         {
-            m_pHierarchy.CompleteRefresh();
+            Hierarchy.CompleteRefresh();
         }
 
         void OnSelectionChanged(List<Gwen.Control.Base> selection)

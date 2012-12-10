@@ -4,84 +4,104 @@ using System.Linq;
 using System.Text;
 using Gwen.Control;
 using Gwen.DragDrop;
+using System.ComponentModel;
+using NotifyPropertyWeaver;
 
 namespace Gwen.Input
 {
     /// <summary>
     /// Input handling.
     /// </summary>
-    public static class InputHandler
+    public class InputHandler
     {
-        private static readonly KeyData m_KeyData = new KeyData();
-        private static readonly float[] m_LastClickTime = new float[MaxMouseButtons];
-        private static Point m_LastClickPos;
+        
+        private readonly KeyData m_KeyData;
+
+
+        private readonly float[] m_LastClickTime;
+        private Point m_LastClickPos;
+
+        //Singleton
+        private static InputHandler instance;
+        public static InputHandler Instance { 
+            get { 
+                if (instance == null) 
+                    instance = new InputHandler(); 
+                return instance; 
+            } 
+        }
+        private InputHandler() {
+            m_KeyData = new KeyData();
+            m_LastClickTime = new float[MaxMouseButtons];
+        }
+
 
         /// <summary>
         /// Control currently hovered by mouse.
         /// </summary>
-        public static Base HoveredControl;
+        public Base HoveredControl;
 
         /// <summary>
         /// Control that corrently has keyboard focus.
         /// </summary>
-        public static Base KeyboardFocus;
+        public Base KeyboardFocus;
 
         /// <summary>
         /// Control that currently has mouse focus.
         /// </summary>
-        public static Base MouseFocus;
+        public Base MouseFocus;
 
         /// <summary>
         /// Maximum number of mouse buttons supported.
         /// </summary>
-        public static int MaxMouseButtons { get { return 5; } }
+        public int MaxMouseButtons { get { return 5; } }
 
         /// <summary>
         /// Maximum time in seconds between mouse clicks to be recognized as double click.
         /// </summary>
-        public static float DoubleClickSpeed { get { return 0.5f; } }
+        public float DoubleClickSpeed { get { return 0.5f; } }
 
         /// <summary>
         /// Time in seconds between autorepeating of keys.
         /// </summary>
-        public static float KeyRepeatRate { get { return 0.03f; } }
+        public float KeyRepeatRate { get { return 0.03f; } }
 
         /// <summary>
         /// Time in seconds before key starts to autorepeat.
         /// </summary>
-        public static float KeyRepeatDelay { get { return 0.5f; } }
+        public float KeyRepeatDelay { get { return 0.5f; } }
 
         /// <summary>
         /// Indicates whether the left mouse button is down.
         /// </summary>
-        public static bool IsLeftMouseDown { get { return m_KeyData.LeftMouseDown; } }
+        public bool IsLeftMouseDown { get { return m_KeyData.LeftMouseDown; } }
 
         /// <summary>
         /// Indicates whether the right mouse button is down.
         /// </summary>
-        public static bool IsRightMouseDown { get { return m_KeyData.RightMouseDown; } }
+        public bool IsRightMouseDown { get { return m_KeyData.RightMouseDown; } }
         
         /// <summary>
         /// Current mouse position.
         /// </summary>
-        public static Point MousePosition; // not property to allow modification of Point fields
+        public PointImmutable MousePosition { get; private set; }
 
         /// <summary>
         /// Indicates whether the shift key is down.
         /// </summary>
-        public static bool IsShiftDown { get { return IsKeyDown(Key.Shift); } }
+        public bool IsShiftDown { get { return IsKeyDown(Key.Shift); } }
 
         /// <summary>
         /// Indicates whether the control key is down.
         /// </summary>
-        public static bool IsControlDown { get { return IsKeyDown(Key.Control); } }
+        public bool IsControlDown { get { return IsKeyDown(Key.Control); } }
 
         /// <summary>
         /// Checks if the given key is pressed.
         /// </summary>
         /// <param name="key">Key to check.</param>
         /// <returns>True if the key is down.</returns>
-        public static bool IsKeyDown(Key key)
+        public bool IsKeyDown(Key key)
         {
             return m_KeyData.KeyState[(int)key];
         }
@@ -92,7 +112,7 @@ namespace Gwen.Input
         /// <param name="canvas">Canvas.</param>
         /// <param name="chr">Input character.</param>
         /// <returns>True if the key was handled.</returns>
-        public static bool DoSpecialKeys(Base canvas, char chr)
+        public bool DoSpecialKeys(Base canvas, char chr)
         {
             if (null == KeyboardFocus) return false;
             if (KeyboardFocus.GetCanvas() != canvas) return false;
@@ -132,7 +152,7 @@ namespace Gwen.Input
         /// <param name="canvas">Canvas.</param>
         /// <param name="chr">Input character.</param>
         /// <returns>True if the key was handled.</returns>
-        public static bool HandleAccelerator(Base canvas, char chr)
+        public bool HandleAccelerator(Base canvas, char chr)
         {
             //Build the accelerator search string
             StringBuilder accelString = new StringBuilder();
@@ -167,11 +187,10 @@ namespace Gwen.Input
         /// <param name="y"></param>
         /// <param name="dx"></param>
         /// <param name="dy"></param>
-        public static void OnMouseMoved(Base canvas, int x, int y, int dx, int dy)
+        public void OnMouseMoved(Base canvas, int x, int y, int dx, int dy)
         {
             // Send input to canvas for study		
-            MousePosition.X = x;
-            MousePosition.Y = y;
+            MousePosition = new PointImmutable(x,y);
 
             UpdateHoveredControl(canvas);
         }
@@ -180,7 +199,7 @@ namespace Gwen.Input
         /// Handles focus updating and key autorepeats.
         /// </summary>
         /// <param name="control">Unused.</param>
-        public static void OnCanvasThink(Base control)
+        public void OnCanvasThink(Base control)
         {
             if (MouseFocus != null && !MouseFocus.IsVisible)
                 MouseFocus = null;
@@ -216,6 +235,10 @@ namespace Gwen.Input
             }
         }
 
+
+        //TODO use property changed instead of this hack
+        public event EventHandler MouseClicked;
+
         /// <summary>
         /// Mouse click handler.
         /// </summary>
@@ -223,8 +246,10 @@ namespace Gwen.Input
         /// <param name="mouseButton">Mouse button number.</param>
         /// <param name="down">Specifies if the button is down.</param>
         /// <returns>True if handled.</returns>
-        public static bool OnMouseClicked(Base canvas, int mouseButton, bool down)
+        public bool OnMouseClicked(Base canvas, int mouseButton, bool down)
         {
+            
+
             // If we click on a control that isn't a menu we want to close
             // all the open menus. Menus are children of the canvas.
             if (down && (null == HoveredControl || !HoveredControl.IsMenuComponent))
@@ -277,6 +302,9 @@ namespace Gwen.Input
             if (down)
                 HoveredControl.Touch();
 
+            if (MouseClicked!=null)
+                MouseClicked.Invoke(this, new EventArgs());
+
 #if GWEN_HOOKSYSTEM
             if (bDown)
             {
@@ -320,7 +348,7 @@ namespace Gwen.Input
         /// <param name="key">Key.</param>
         /// <param name="down">True if the key is down.</param>
         /// <returns>True if handled.</returns>
-        public static bool OnKeyEvent(Base canvas, Key key, bool down)
+        public bool OnKeyEvent(Base canvas, Key key, bool down)
         {
             if (null == KeyboardFocus) return false;
             if (KeyboardFocus.GetCanvas() != canvas) return false;
@@ -355,7 +383,7 @@ namespace Gwen.Input
             return false;
         }
 
-        private static void UpdateHoveredControl(Base inCanvas)
+        private void UpdateHoveredControl(Base inCanvas)
         {
             Base hovered = inCanvas.GetControlAt(MousePosition.X, MousePosition.Y);
 
@@ -388,7 +416,7 @@ namespace Gwen.Input
             }
         }
 
-        private static void FindKeyboardFocus(Base control)
+        private void FindKeyboardFocus(Base control)
         {
             if (null == control) return;
             if (control.KeyboardInputEnabled)

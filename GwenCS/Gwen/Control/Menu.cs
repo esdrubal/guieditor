@@ -70,7 +70,7 @@ namespace Gwen.Control
         {
             IsHidden = false;
             BringToFront();
-            Point mouse = Input.InputHandler.MousePosition;
+            Point mouse = Input.InputHandler.Instance.MousePosition;
             SetPosition(mouse.X, mouse.Y);
         }
 

@@ -19,6 +19,13 @@ namespace Gwen.Control
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public string Id
+        {
+            get;
+            set;
+        }
+
+
         // this REALLY needs to be replaced with control-specific events
         /// <summary>
         /// Delegate used for all control event handlers.
@@ -46,8 +53,6 @@ namespace Gwen.Control
 
         private Skin.Base m_Skin;
 
-        [NotifyProperty]
-        private Rectangle m_Bounds;
         private Rectangle m_RenderBounds;
         private Rectangle m_InnerBounds;
         private Padding m_Padding;
@@ -262,12 +267,12 @@ namespace Gwen.Control
         /// <summary>
         /// Indicates whether the control is hovered by mouse pointer.
         /// </summary>
-        public virtual bool IsHovered { get { return InputHandler.HoveredControl == this; } }
+        public virtual bool IsHovered { get { return InputHandler.Instance.HoveredControl == this; } }
 
         /// <summary>
         /// Indicates whether the control has focus.
         /// </summary>
-        public bool HasFocus { get { return InputHandler.KeyboardFocus == this; } }
+        public bool HasFocus { get { return InputHandler.Instance.KeyboardFocus == this; } }
 
         /// <summary>
         /// Indicates whether the control is disabled.
@@ -322,7 +327,7 @@ namespace Gwen.Control
         /// <summary>
         /// Control's size and position relative to the parent.
         /// </summary>
-        public Rectangle Bounds { get { return m_Bounds; } }
+        public RectangleImmutable Bounds { get; private set; }
         
         /// <summary>
         /// Bounds for the renderer.
@@ -350,7 +355,7 @@ namespace Gwen.Control
         /// <summary>
         /// Determines whether hover should be drawn during rendering.
         /// </summary>
-        protected bool ShouldDrawHover { get { return InputHandler.MouseFocus == this || InputHandler.MouseFocus == null; } }
+        protected bool ShouldDrawHover { get { return InputHandler.Instance.MouseFocus == this || InputHandler.Instance.MouseFocus == null; } }
 
         protected virtual bool AccelOnlyFocus { get { return false; } }
         protected virtual bool NeedsInputChars { get { return false; } }
@@ -375,19 +380,19 @@ namespace Gwen.Control
         /// <summary>
         /// Leftmost coordinate of the control.
         /// </summary>
-        public int X { get { return m_Bounds.X; } set { SetPosition(value, Y); } }
+        public int X { get { return Bounds.X; } set { SetPosition(value, Y); } }
 
         /// <summary>
         /// Topmost coordinate of the control.
         /// </summary>
-        public int Y { get { return m_Bounds.Y; } set { SetPosition(X, value); } }
+        public int Y { get { return Bounds.Y; } set { SetPosition(X, value); } }
 
         // todo: Bottom/Right includes margin but X/Y not?
 
-        public int Width { get { return m_Bounds.Width; } set { SetSize(value, Height); } }
-        public int Height { get { return m_Bounds.Height; } set { SetSize(Width, value); } }
-        public int Bottom { get { return m_Bounds.Bottom + m_Margin.Bottom; } }
-        public int Right { get { return m_Bounds.Right + m_Margin.Right; } }
+        public int Width { get { return Bounds.Width; } set { SetSize(value, Height); } }
+        public int Height { get { return Bounds.Height; } set { SetSize(Width, value); } }
+        public int Bottom { get { return Bounds.Bottom + m_Margin.Bottom; } }
+        public int Right { get { return Bounds.Right + m_Margin.Right; } }
 
         /// <summary>
         /// Determines whether margin, padding and bounds outlines for the control will be drawn. Applied recursively to all children.
@@ -423,7 +428,7 @@ namespace Gwen.Control
             Parent = parent;
 
             m_Hidden = false;
-            m_Bounds = new Rectangle(0, 0, 10, 10);
+            Bounds = new Rectangle(0, 0, 10, 10);
             m_Padding = Padding.Zero;
             m_Margin = Margin.Zero;
 
@@ -463,12 +468,12 @@ namespace Gwen.Control
 #endif
             }
 
-            if (InputHandler.HoveredControl == this)
-                InputHandler.HoveredControl = null;
-            if (InputHandler.KeyboardFocus == this)
-                InputHandler.KeyboardFocus = null;
-            if (InputHandler.MouseFocus == this)
-                InputHandler.MouseFocus = null;
+            if (InputHandler.Instance.HoveredControl == this)
+                InputHandler.Instance.HoveredControl = null;
+            if (InputHandler.Instance.KeyboardFocus == this)
+                InputHandler.Instance.KeyboardFocus = null;
+            if (InputHandler.Instance.MouseFocus == this)
+                InputHandler.Instance.MouseFocus = null;
 
             DragAndDrop.ControlDeleted(this);
             Gwen.ToolTip.ControlDeleted(this);
@@ -902,15 +907,15 @@ namespace Gwen.Control
         /// </returns>
         public virtual bool SetBounds(int x, int y, int width, int height)
         {
-            if (m_Bounds.X == x &&
-                m_Bounds.Y == y &&
-                m_Bounds.Width == width &&
-                m_Bounds.Height == height)
+            if (Bounds.X == x &&
+                Bounds.Y == y &&
+                Bounds.Width == width &&
+                Bounds.Height == height)
                 return false;
 
             Rectangle oldBounds = Bounds;
 
-            m_Bounds = new Rectangle(x, y, width, height);
+            Bounds = new Rectangle(x, y, width, height);
 
             OnBoundsChanged(oldBounds);
 
@@ -961,7 +966,7 @@ namespace Gwen.Control
                 Parent.OnChildBoundsChanged(oldBounds, this);
 
 
-            if (m_Bounds.Width != oldBounds.Width || m_Bounds.Height != oldBounds.Height)
+            if (Bounds.Width != oldBounds.Width || Bounds.Height != oldBounds.Height)
             {
                 Invalidate();
             }
@@ -1344,13 +1349,13 @@ namespace Gwen.Control
         /// </summary>
         public virtual void Focus()
         {
-            if (InputHandler.KeyboardFocus == this)
+            if (InputHandler.Instance.KeyboardFocus == this)
                 return;
 
-            if (InputHandler.KeyboardFocus != null)
-                InputHandler.KeyboardFocus.OnLostKeyboardFocus();
+            if (InputHandler.Instance.KeyboardFocus != null)
+                InputHandler.Instance.KeyboardFocus.OnLostKeyboardFocus();
 
-            InputHandler.KeyboardFocus = this;
+            InputHandler.Instance.KeyboardFocus = this;
             OnKeyboardFocus();
             Redraw();
         }
@@ -1360,10 +1365,10 @@ namespace Gwen.Control
         /// </summary>
         public virtual void Blur()
         {
-            if (InputHandler.KeyboardFocus != this)
+            if (InputHandler.Instance.KeyboardFocus != this)
                 return;
 
-            InputHandler.KeyboardFocus = null;
+            InputHandler.Instance.KeyboardFocus = null;
             OnLostKeyboardFocus();
             Redraw();
         }
@@ -1535,7 +1540,7 @@ namespace Gwen.Control
                     GetCanvas().NextTab = this;
             }
 
-            if (InputHandler.KeyboardFocus == this)
+            if (InputHandler.Instance.KeyboardFocus == this)
             {
                 GetCanvas().NextTab = null;
             }
@@ -1629,8 +1634,8 @@ namespace Gwen.Control
             m_RenderBounds.X = 0;
             m_RenderBounds.Y = 0;
 
-            m_RenderBounds.Width = m_Bounds.Width;
-            m_RenderBounds.Height = m_Bounds.Height;
+            m_RenderBounds.Width = Bounds.Width;
+            m_RenderBounds.Height = Bounds.Height;
         }
 
         /// <summary>
@@ -1640,6 +1645,11 @@ namespace Gwen.Control
         {
             Platform.Neutral.SetCursor(m_Cursor);
         }
+
+
+        public event Func<Base,Package,bool> DragAndDropCanAcceptPackage;
+        public event Func<Base, Package, int, int,bool> DragAndDropHandleDrop;
+
 
         // giver
         public virtual Package DragAndDrop_GetPackage(int x, int y)
@@ -1689,6 +1699,8 @@ namespace Gwen.Control
         // receiver
         public virtual bool DragAndDrop_HandleDrop(Package p, int x, int y)
         {
+            if (DragAndDropHandleDrop != null)
+                return DragAndDropHandleDrop.Invoke(this,p,x,y);
             DragAndDrop.SourceControl.Parent = this;
             return true;
         }
@@ -1714,6 +1726,8 @@ namespace Gwen.Control
         // receiver
         public virtual bool DragAndDrop_CanAcceptPackage(Package p)
         {
+            if (DragAndDropCanAcceptPackage != null)
+                return DragAndDropCanAcceptPackage.Invoke(this, p);
             return false;
         }
 
@@ -1760,7 +1774,7 @@ namespace Gwen.Control
         /// <returns>True if handled.</returns>
         internal virtual bool HandleAccelerator(String accelerator)
         {
-            if (InputHandler.KeyboardFocus == this || !AccelOnlyFocus)
+            if (InputHandler.Instance.KeyboardFocus == this || !AccelOnlyFocus)
             {
                 if (m_Accelerators.ContainsKey(accelerator))
                 {
@@ -2038,7 +2052,7 @@ namespace Gwen.Control
         /// <param name="skin">Skin to use.</param>
         protected virtual void RenderFocus(Skin.Base skin)
         {
-            if (InputHandler.KeyboardFocus != this)
+            if (InputHandler.Instance.KeyboardFocus != this)
                 return;
             if (!IsTabable)
                 return;

@@ -133,7 +133,7 @@ namespace Gwen.Control
             if (down)
             {
                 m_Depressed = true;
-                InputHandler.MouseFocus = this;
+                InputHandler.Instance.MouseFocus = this;
             }
             else
             {
@@ -144,7 +144,7 @@ namespace Gwen.Control
                     NudgeDown(this);
 
                 m_Depressed = false;
-                InputHandler.MouseFocus = null;
+                InputHandler.Instance.MouseFocus = null;
             }
         }
 

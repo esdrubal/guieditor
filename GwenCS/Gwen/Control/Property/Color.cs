@@ -82,7 +82,7 @@ namespace Gwen.Control.Property
         /// </summary>
         public override bool IsEditing
         {
-            get { return m_TextBox == InputHandler.KeyboardFocus; }
+            get { return m_TextBox == InputHandler.Instance.KeyboardFocus; }
         }
 
         private void SetTextFromColor(System.Drawing.Color color)

@@ -121,7 +121,7 @@ namespace Gwen.Input
             KeyboardKeyEventArgs ev = args as KeyboardKeyEventArgs;
             char ch = TranslateChar(ev.Key);
 
-            if (InputHandler.DoSpecialKeys(m_Canvas, ch))
+            if (InputHandler.Instance.DoSpecialKeys(m_Canvas, ch))
                 return false;
             /*
             if (ch != ' ')

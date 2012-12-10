@@ -19,6 +19,7 @@ namespace Gwen.Input
             KeyState = new bool[(int)Key.Count];
             NextRepeat = new float[(int)Key.Count];
             // everything is initialized to 0 by default
+            
         }
     }
 }

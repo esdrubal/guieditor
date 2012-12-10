@@ -50,13 +50,13 @@ namespace Gwen.ControlInternal
             {
                 m_Held = true;
                 m_HoldPos = m_Target.CanvasPosToLocal(new Point(x, y));
-                InputHandler.MouseFocus = this;
+                InputHandler.Instance.MouseFocus = this;
             }
             else
             {
                 m_Held = false;
 
-                InputHandler.MouseFocus = null;
+                InputHandler.Instance.MouseFocus = null;
             }
         }
 

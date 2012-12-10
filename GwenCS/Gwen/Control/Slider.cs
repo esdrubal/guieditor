@@ -227,7 +227,7 @@ namespace Gwen.Control
         /// <param name="skin">Skin to use.</param>
         protected override void RenderFocus(Skin.Base skin)
         {
-            if (InputHandler.KeyboardFocus != this) return;
+            if (InputHandler.Instance.KeyboardFocus != this) return;
             if (!IsTabable) return;
             
             skin.DrawKeyboardHighlight(this, RenderBounds, 0);

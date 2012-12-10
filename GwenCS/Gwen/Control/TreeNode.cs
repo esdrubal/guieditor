@@ -208,6 +208,13 @@ namespace Gwen.Control
         {
             TreeNode node = new TreeNode(this);
             node.Text = label;
+
+            return AddNode(node);
+        }
+
+        public TreeNode AddNode(TreeNode node)
+        {
+            node.Parent = this;
             node.Dock = Pos.Top;
             node.IsRoot = this is TreeControl;
             node.TreeControl = m_TreeControl;

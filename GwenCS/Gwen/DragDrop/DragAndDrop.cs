@@ -65,7 +65,7 @@ namespace Gwen.DragDrop
 
             // Now we're dragging something!
             SourceControl = m_LastPressedControl;
-            InputHandler.MouseFocus = null;
+            InputHandler.Instance.MouseFocus = null;
             m_LastPressedControl = null;
             CurrentPackage.DrawControl = null;
 
@@ -162,10 +162,18 @@ namespace Gwen.DragDrop
                 return true;
             }
 
-            if (hoveredControl == null) 
-                return false;
-            if (!hoveredControl.DragAndDrop_Draggable()) 
-                return false;
+            //if (hoveredControl == null) 
+            //    return false;
+            //if (!hoveredControl.DragAndDrop_Draggable()) 
+            //    return false;
+
+            while(true){
+                if (hoveredControl == null)
+                    return false;
+                if (hoveredControl.DragAndDrop_Draggable())
+                    break;
+                hoveredControl = hoveredControl.Parent;
+            }
 
             // Store the last clicked on control. Don't do anything yet, 
             // we'll check it in OnMouseMoved, and if it moves further than

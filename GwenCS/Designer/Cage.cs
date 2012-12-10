@@ -47,8 +47,8 @@ namespace Designer
         {
             var bounds = new Rectangle(0,0,Width,Height);
 
-	        skin.Renderer.DrawColor = Color.FromArgb(100, 255, 255, 255);
-            skin.Renderer.DrawFilledRect(bounds);
+	        //skin.Renderer.DrawColor = Color.FromArgb(100, 255, 255, 255);
+            //skin.Renderer.DrawFilledRect(bounds);
 
 	        skin.Renderer.DrawColor = Color.FromArgb(150, 0, 0, 0);
             skin.Renderer.DrawLinedRect(bounds);
